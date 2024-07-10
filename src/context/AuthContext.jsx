@@ -1,7 +1,8 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
+import isTokenValid from "../helpers/isTokenValid";
 
 export const AuthContext = createContext({});
 
@@ -9,7 +10,22 @@ function AuthContextProvider({ children }) {
     const [isAuth, setIsAuth] = useState({
         isAuth: false,
         user: null,
+        status: 'pending',
     });
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+
+        if(token && isTokenValid()) {
+            void login(token);
+        } else {
+            setIsAuth({
+                isAuth: false,
+                user: null,
+                status: 'done',
+            });
+        }
+    }, []);
 
     const navigate = useNavigate();
 
@@ -36,6 +52,7 @@ function AuthContextProvider({ children }) {
                     username: response.data.username,
                     id: response.data.id,
                 },
+                status: 'done',
             });
 
             navigate('/profile');
@@ -44,6 +61,7 @@ function AuthContextProvider({ children }) {
             setIsAuth({
                 isAuth: false,
                 user: null,
+                status: 'done',
             });
         }
     }
@@ -54,6 +72,7 @@ function AuthContextProvider({ children }) {
         setIsAuth({
             isAuth: false,
             user: null,
+            status: 'done',
         });
         navigate('/');
     }
@@ -67,7 +86,7 @@ function AuthContextProvider({ children }) {
 
     return (
         <AuthContext.Provider value={contextData}>
-            {children}
+            { isAuth.status === 'done' ? children : <p>Loading...</p> }
         </AuthContext.Provider>
     );
 }

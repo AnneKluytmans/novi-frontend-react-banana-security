@@ -1,4 +1,4 @@
-import {useContext, useState} from "react";
+import { useContext, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useForm } from "react-hook-form";
@@ -14,6 +14,14 @@ function SignIn() {
 
     const { login } = useContext(AuthContext);
 
+    const source = axios.CancelToken.source();
+
+    useEffect(() => {
+        return function cleanup() {
+            source.cancel();
+        }
+    }, []);
+
     async function handleFormSubmit(data) {
         console.log(data);
         toggleError(false);
@@ -23,6 +31,8 @@ function SignIn() {
             const result = await axios.post('http://localhost:3000/login', {
                 email: data.email,
                 password: data.password
+            }, {
+                cancelToken: source.token,
             });
             console.log(result.data);
             login(result.data.accessToken);

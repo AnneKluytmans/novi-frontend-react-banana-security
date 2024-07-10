@@ -13,6 +13,14 @@ function SignUp() {
 
     const navigate = useNavigate();
 
+    const source = axios.CancelToken.source();
+
+    useEffect(() => {
+        return function cleanup() {
+            source.cancel();
+        }
+    }, []);
+
     async function handleFormSubmit(data) {
         console.log(data);
         toggleError(false);
@@ -23,6 +31,8 @@ function SignUp() {
                 email: data.email,
                 username: data.username,
                 password: data.password
+            }, {
+                cancelToken: source.token,
             });
             navigate("/signin")
         }  catch(e) {
