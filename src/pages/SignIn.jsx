@@ -71,7 +71,7 @@ function SignIn() {
               Inloggen
           </button>
           {loading && <h2>Loading...</h2>}
-          {error && <h2>Het registreren is niet gelukt. Probeer het opnieuw.</h2>}
+          {error && <h2>Het inloggen is niet gelukt. Probeer het opnieuw.</h2>}
       </form>
 
       <p>Heb je nog geen account? <Link to="/signup">Registreer</Link> je dan eerst.</p>

@@ -1,7 +1,7 @@
-import jwt_decode from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 
 function isTokenValid(JWT) {
-    const decodedToken = jwt_decode(JWT);
+    const decodedToken = jwtDecode(JWT);
     const expirationUnix = decodedToken.exp;
 
     const now = new Date().getTime();
