@@ -86,8 +86,8 @@ nav a:active {
   justify-content: space-between;
 }
 
-.user h5 {
-  margin-right: 8px;
+.user h4 {
+  margin-right: 16px;
 }
 
 .logo-container {

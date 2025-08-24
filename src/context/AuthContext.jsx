@@ -16,7 +16,7 @@ function AuthContextProvider({ children }) {
     useEffect(() => {
         const token = localStorage.getItem('token');
 
-        if(token && isTokenValid()) {
+        if(token && isTokenValid(token)) {
             void login(token);
         } else {
             setIsAuth({
